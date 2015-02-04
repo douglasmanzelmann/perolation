@@ -2,9 +2,9 @@
  * Created by test on 2/2/15.
  */
 public class Percolation {
-    int size;
-    boolean[][] grid;
-    WeightedQuickUnionUF percolate;
+    private int size;
+    private boolean[][] grid;
+    private WeightedQuickUnionUF percolate;
 
     public Percolation(int N) {
         size = N;

@@ -15,21 +15,8 @@ public class Percolation {
         for (int i = 1; i <= N; i++)
             percolate.union(0, i);
 
-        /*System.out.println("Top row: " + percolate.connected(0, 1));
-        System.out.println("Top row: " + percolate.connected(0, 2));
-        System.out.println("Top row: " + percolate.connected(0, 3));
-        System.out.println("Top row: " + percolate.connected(0, 4));
-        System.out.println("Top row: " + percolate.connected(0, 5));   */
-
-        //connect virtual bottom row (i.e., n+1) to bottom row
         for (int i = 1; i <= N; i++)
             percolate.union(size*size+1, N*(N-1) + i);
-
-        /*System.out.println("Size: " + size*size);
-        System.out.println("(" + (size*size+1) +
-                                    "," + (N*(N-1)+2) + "): " + percolate.connected(size*size+1, N*(N-1)+2));    */
-
-        //probably in another method
 
     }
 
@@ -39,7 +26,6 @@ public class Percolation {
 
         grid[i][j] = true;
 
-        //also do this in the WeightedQuickUnionUF
         int currentWQUIndex = weightedQuickUnionIndex(i, j);
 
         if (i > 1 && isOpen(i-1, j)) //north
@@ -69,17 +55,5 @@ public class Percolation {
         return(i*size+j);
     }
 
-    public static void main(String[] args) {
-        /*Percolation test = new Percolation(5);
-
-        System.out.println("Percolates: " + test.percolates());
-        test.open(1, 3);
-        test.open(2, 3);
-        test.open(3, 3);
-        System.out.println("Percolates: " + test.percolates());
-        test.open(4, 3);
-        test.open(5, 3);
-
-        System.out.println("Percolates: " + test.percolates()); */
-    }
+    public static void main(String[] args) {    }
 }

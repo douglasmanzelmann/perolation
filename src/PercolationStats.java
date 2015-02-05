@@ -15,15 +15,15 @@ public class PercolationStats {
             Percolation perc = new Percolation(N);
 
             while(!perc.percolates()) {
-                int i=0;
-                int j=0;
+                int i = StdRandom.uniform(1, N+1);
+                int j = StdRandom.uniform(1, N+1);
 
                 while(perc.isOpen(i, j)) {
                     i = StdRandom.uniform(1, N+1);
                     j = StdRandom.uniform(1, N+1);
                 }
 
-                perc.open(StdRandom.uniform(1, N+1), StdRandom.uniform(1, N+1));
+                perc.open(i, j);
                 openSites[n]++;
             }
         }
@@ -33,19 +33,30 @@ public class PercolationStats {
         double meanSum=0;
 
         for (int i = 0; i < totalTests; i++) {
-            meanSum += (double)openSites[i] / totalSites;
-            //System.out.println((double)openSites[i] / totalSites);
-            System.out.println(openSites[i]);
+            meanSum += ((double)openSites[i] / totalSites);
         }
 
         return meanSum/totalTests;
     }
 
-    //public double stddev() {}
+    public double stddev() {
+        double stdDevSum = 0;
+        double mean = mean();
 
-    //public double confidenceLo() {}
+        for (int i = 0; i < totalTests; i++) {
+            stdDevSum += Math.pow((((double)openSites[i] / totalSites) - mean), 2);
+        }
 
-    //public double confidenceHi() {}
+        return Math.sqrt(stdDevSum / (totalTests - 1));
+    }
+
+    public double confidenceLo() {
+        return(mean() - (1.96*stddev())/ Math.sqrt(totalTests));
+    }
+
+    public double confidenceHi() {
+        return(mean() + (1.96*stddev())/ Math.sqrt(totalTests));
+    }
 
     public static void main(String[] args) {
         int N = Integer.parseInt(args[0]); // NxN grid
@@ -53,5 +64,9 @@ public class PercolationStats {
 
         PercolationStats test = new PercolationStats(N, T);
         System.out.println("Mean = " + test.mean());
+        System.out.println("stddev = " + test.stddev());
+        System.out.println("95% confidence interval = " +
+                            test.confidenceLo() + ", " +
+                            test.confidenceHi());
     }
 }

@@ -7,6 +7,8 @@ public class Percolation {
     private WeightedQuickUnionUF percolate;
 
     public Percolation(int N) {
+        if (N <= 0) throw new java.lang.IllegalArgumentException("N has to be greater than or equal to 1.");
+
         size = N;
         grid = new boolean[N+1][N+1];
         percolate = new WeightedQuickUnionUF(N*N+2);
@@ -15,12 +17,17 @@ public class Percolation {
         for (int i = 1; i <= N; i++)
             percolate.union(0, i);
 
+        //connect virtual bottom row (i.e., N+1) to bottom row
         for (int i = 1; i <= N; i++)
             percolate.union(size*size+1, N*(N-1) + i);
+        System.out.println("isFull(1,1): " + isFull(1, 1));
 
     }
 
     public void open(int i, int j) {
+        if (i <= 0 || i > size) throw new IndexOutOfBoundsException("row index i out of bounds");
+        else if (j <= 0 || j > size) throw new IndexOutOfBoundsException("column index j out of bounds");
+
         if (isOpen(i, j))
             return;
 
@@ -39,11 +46,21 @@ public class Percolation {
     }
 
     public boolean isOpen(int i, int j) {
+        if (i <= 0 || i > size) throw new IndexOutOfBoundsException("row index i out of bounds");
+        else if (j <= 0 || j > size) throw new IndexOutOfBoundsException("column index j out of bounds");
+
         return grid[i][j];
     }
 
     public boolean isFull(int i, int j) {
-        return grid[i][j];
+        if (i <= 0 || i > size) throw new IndexOutOfBoundsException("row index i out of bounds");
+        else if (j <= 0 || j > size) throw new IndexOutOfBoundsException("column index j out of bounds");
+
+        if (isOpen(i, j) && percolate.connected(0, weightedQuickUnionIndex(i, j))) {
+            return true;
+        }
+
+        return false;
     }
 
     public boolean percolates() {
@@ -55,5 +72,9 @@ public class Percolation {
         return(i*size+j);
     }
 
-    public static void main(String[] args) {    }
+    public static void main(String[] args) {
+    Percolation perc = new Percolation(1);
+        System.out.println("percolates: " + perc.percolates());
+
+    }
 }

@@ -7,6 +7,9 @@ public class PercolationStats {
     private int totalTests;
 
     public PercolationStats(int N, int T) {
+        if (N <= 0) throw new java.lang.IllegalArgumentException("N has to be greater than or equal to 1.");
+        if (T <= 0) throw new java.lang.IllegalArgumentException("T has to be greater than or equal to 1.");
+
         totalTests = T;
         openSites = new int[T];
         totalSites = N*N;
@@ -14,11 +17,11 @@ public class PercolationStats {
         for (int n = 0; n < T; n++) {
             Percolation perc = new Percolation(N);
 
-            while(!perc.percolates()) {
+            while (!perc.percolates()) {
                 int i = StdRandom.uniform(1, N+1);
                 int j = StdRandom.uniform(1, N+1);
 
-                while(perc.isOpen(i, j)) {
+                while (perc.isOpen(i, j)) {
                     i = StdRandom.uniform(1, N+1);
                     j = StdRandom.uniform(1, N+1);
                 }
